@@ -1,7 +1,7 @@
 import os
 import csv
 
-csvpath = os.path.join("budget_data.csv")
+csvpath = os.path.join("budget_data2.csv")
 
 with open(csvpath, newline="") as csvfile:
 
