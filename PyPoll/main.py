@@ -2,42 +2,62 @@
 import os
 import csv
 
-file = os.path.join('raw_data', 'election_data_' + str(file_num) + '.csv')
+ElectData = os.path.join("Resources", "election_data.csv")
 
-with open(file, 'r') as csvfile:
+totalnumber = 0
 
-    csvread = csv.reader(csvfile)
+canvote = 0
 
-poll = {}
-total_votes = 0
-candidates = []
-num_votes = []
+candidatelist = {}
 
 
-for row in csvread:
+with open(ElectData, newline="") as ElectData:
 
-    total_votes += 1
+    csvreader = csv.reader(ElectData, delimiter=",")
 
-    if row[2] in poll.keys():
-
-        poll[row[2]] = poll[row[2]] + 1
-
-    else:
-
-        poll[row[2]] = 1
+    header = next(ElectData)
 
 
-for key, value in poll.items():
 
-    candidates.append(key)
+    for pypoll in csvreader:
 
-    num_votes.append(value)
+        totalnumber = totalnumber +1  
 
-vote_percent = []
+        
 
-for n in num_votes:
+        if pypoll[2] in candidatelist:
 
-    vote_percent.append(round(n/total_votes*100, 1))
+           candidatelist[pypoll[2]] += 1
+
+        else:
+
+           candidatelist[pypoll[2]] = 1
+
+
+
+    print("------------------------------------------------------------------")    
+
+    print("Total Votes: " + str(totalnumber))
+
+    print("------------------------------------------------------------------")
+
+    
+
+    maxvote = max(candidatelist.values())
+
+    for canvote in candidatelist:
+
+        voterate = candidatelist[canvote] / totalnumber * 100
+
+        if candidatelist[canvote] == maxvote:
+
+           x = canvote
+
+        print(canvote + ": " + "{0:.3f}".format(voterate) + "% " + "(" + str(candidatelist[canvote]) + ")")
+
+    print("------------------------------------------------------------------") 
+
+    print("Winner: " + x)
 
 
 for name in clean_data:
