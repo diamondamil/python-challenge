@@ -2,7 +2,7 @@
 import os
 import csv
 
-ElectData = os.path.join("Resources", "election_data.csv")
+ElectData = os.path.join("Resources", "election_data2.csv")
 
 totalnumber = 0
 
