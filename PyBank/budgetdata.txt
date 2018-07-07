@@ -1,5 +1,4 @@
 Results
-
 ----------
 
 Total months in dataset: 41
