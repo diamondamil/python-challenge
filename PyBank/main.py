@@ -1,91 +1,144 @@
+## Import Modules
+
 import os
+
 import csv
 
-csvpath = os.path.join("budget_data2.csv")
-
-with open(csvpath, newline="") as csvfile:
-
-    csvreader = csv.reader(csvfile, delimiter=",")
 
 
+## Use the os module to read file path
 
-    csv_header = next(csvreader)
+csv_Path = os.path.join("Resources", "budget_data.csv")
 
-#list and calculate the summary numbers
-
-    totalmonth = 0
-
-    totalamount = 0.0
-
-    Month = []
-
-    Revenue =[]
-
-    changes = [ ]
-
-    different = 0.0
+#print(csv_Path)
 
 
 
-    for row in csvreader:
+## Open the CSV
 
-        
+with open(csv_Path, newline = "") as csv_File:
 
-        totalmonth += 1
 
-        totalamount += float(row[1])
 
-        changes.append (- different + float(row[1]))
+    # Initiate csv reader
 
-        Month.append(row[0])
+    csv_Reader = csv.reader(csv_File, delimiter = ",")
 
-        Revenue.append(row[1])
+    #print(csv_Reader)
 
-        different = float(row[1])
 
-    changes.pop(0)
+
+    # Read the Header row 
+
+    csv_Header = next(csv_File)
+
+    print(f'\nHeader: {csv_Header}')
+
+
+
+    # Create lists to store Date and Revenue columns
+
+    DateCol = []
+
+    RevenueCol = []
 
     
-    totalchange = 0.0
-
-    numberofchange = 0
-
-#get the average change
-
-    for change in changes:
-
-        totalchange += change
-
-        numberofchange +=1
-
-    avgchange = totalchange / numberofchange
-
-#get the (fx)max and (fx)mix changes in profit and position in the list
-
-    maxchange = max(changes)
-
-    minchange = min(changes)
-
-    maxmonth = Month[changes.index(maxchange)+1]
-
-    minmonth = Month[changes.index(minchange)+1]
-
-    maxrevenue = Revenue[changes.index(maxchange)+1]
-
-    minrevenue = Revenue[changes.index(minchange)+1]
 
 
 
-    print ("Financial Analysis")
+    # Read each row x in data
 
-    print("-----------------------------------")
+    for x in csv_Reader:
 
-    print("Total Months: "+ str(totalmonth))
+ 
 
-    print("Total: "+ "$"+str(int(totalamount)))
+        # Store all Date records in a list
 
-    print("Average Change: $"+str("{0:.2f}".format(avgchange)))
+        DateCol.append(x[0])
 
-    print("Greatest Increase in Profits:"+ maxmonth + " ($"+ str(int(maxchange)) + ")")
 
-    print("Greatest Decrease in Profits:"+ minmonth + " ($"+ str(int(minchange)) + ")")
+
+        # Store all Revenue records in a list
+
+        RevenueCol.append(int(x[1]))
+
+
+
+
+
+    # Print the count of Months    
+
+    TotalMonths = len(DateCol)
+
+    print(f'Total months in dataset: {TotalMonths}')
+
+
+
+    # Total net amount of "Profi/Losses" over the entire period
+
+    NetTotal = sum(RevenueCol)
+
+    print(f'Total: ${NetTotal}')
+
+
+
+    # The average change in "Profit/Losses" between months over the entire period
+
+    AverageChange = round(float(NetTotal/TotalMonths) , 2)
+
+    print(f'Average Change: $ {AverageChange}')
+
+
+
+    # Greatest Increase in Profits
+
+    GreatestIncrease = max(RevenueCol)
+
+    print(f'Greatest INCREASE in revenue: ${GreatestIncrease}') #how do i pull in date
+
+
+
+    # Greatest Decrease in Profits
+
+    GreatestDecrease = min(RevenueCol) 
+
+    print(f'Greatest DECREASE in revenue: ${GreatestDecrease}') #how do i pull in date
+
+
+
+# Use os module to specify output file to WRITE to
+
+csv_Output_Path = os.path.join("budgetdata.txt")
+
+
+
+# Open the output file using WRITE mode
+
+with open(csv_Output_Path, "w", newline = "") as csv_File_Out:
+
+
+
+    # Initialize csv.writer
+
+    csv_Writer = csv.writer(csv_File_Out)
+
+
+
+    # Write results to text file
+
+    csv_Writer.writerow(["Results"])
+
+    csv_Writer.writerow(["----------"])
+
+    csv_Writer.writerow(["Total months in dataset: " + str(TotalMonths)])
+
+    csv_Writer.writerow(["Total: $" + str(NetTotal)])
+
+    csv_Writer.writerow(["Average Change: $" + str(AverageChange)])
+
+    csv_Writer.writerow(["Greatest INCREASE in revenue: $" + str(GreatestInc)]) #how do i pull in date
+
+    csv_Writer.writerow(["Greatest DECREASE in revenue: $" + str(GreatestDec)]) #how do i pull in date
+
+    
+
